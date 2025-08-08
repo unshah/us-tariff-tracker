@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global US Tariffs Tracker 2025 - Complete Coverage</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Update Status Indicator -->
+        <div id="update-indicator" class="update-indicator hidden">
+            <div class="update-spinner"></div>
+            <span class="update-text">Updating global tariff data...</span>
+        </div>
+
+        <!-- Notification Toast Container -->
+        <div id="notification-container" class="notification-container"></div>
+
+        <!-- Manual Refresh Button -->
+        <button id="manual-refresh-btn" class="manual-refresh-btn" title="Refresh Data">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+        </button>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-main">
+                        <h1>Global US Tariffs Tracker 2025</h1>
+                        <p class="header-subtitle">Complete coverage of EU, Asian, and South American countries - 86+ countries tracked</p>
+                        <div class="global-summary">
+                            <div class="global-stat">
+                                <span class="stat-number">27</span>
+                                <span class="stat-label">EU Countries</span>
+                            </div>
+                            <div class="global-stat">
+                                <span class="stat-number">46</span>
+                                <span class="stat-label">Asian Countries</span>
+                            </div>
+                            <div class="global-stat">
+                                <span class="stat-number">13</span>
+                                <span class="stat-label">South American Countries</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-status">
+                        <div class="last-updated" id="last-updated">Last updated: August 7, 2025 - 3:00 PM EDT</div>
+                        <div class="next-update" id="next-update">Next update: August 7, 2025 - 4:00 PM EDT</div>
+                        <div class="update-frequency">Updates every hour automatically</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Regional Overview Banner -->
+        <section class="regional-banner">
+            <div class="container">
+                <div class="regional-overview">
+                    <div class="region-card europe">
+                        <div class="region-icon">🇪🇺</div>
+                        <div class="region-info">
+                            <h3>European Union</h3>
+                            <div class="region-stats">
+                                <span class="unified-rate">15% Unified Rate</span>
+                                <span class="trade-value">$1.2T Trade Volume</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="region-card asia">
+                        <div class="region-icon">🌏</div>
+                        <div class="region-info">
+                            <h3>Asia-Pacific</h3>
+                            <div class="region-stats">
+                                <span class="avg-rate">Avg. 24.5% Rate</span>
+                                <span class="trade-value">$2.8T Trade Volume</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="region-card south-america">
+                        <div class="region-icon">🌎</div>
+                        <div class="region-info">
+                            <h3>South America</h3>
+                            <div class="region-stats">
+                                <span class="avg-rate">Avg. 31.2% Rate</span>
+                                <span class="trade-value">$245B Trade Volume</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <div class="container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="overview">Global Overview</button>
+                    <button class="tab-btn" data-tab="economic-impact">Economic Impact Analysis</button>
+                    <button class="tab-btn" data-tab="regional-analysis">Regional Analysis</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Overview Tab Content -->
+                <div id="overview-tab" class="tab-content active">
+                    <!-- Enhanced Filters Section -->
+                    <section class="filters-section">
+                        <div class="filters-grid">
+                            <!-- Search & Filters -->
+                            <div class="filter-group">
+                                <h3>Search & Filter</h3>
+                                <div class="search-box">
+                                    <input type="text" id="country-search" class="form-control" placeholder="Search countries by name or exports...">
+                                </div>
+                                
+                                <!-- Region Filter -->
+                                <div class="region-filter">
+                                    <label class="form-label">Filter by region:</label>
+                                    <select id="region-filter" class="form-control">
+                                        <option value="">All regions</option>
+                                        <option value="europe">Europe (EU + Others)</option>
+                                        <option value="asia">Asia-Pacific</option>
+                                        <option value="south-america">South America</option>
+                                        <option value="north-america">North America</option>
+                                    </select>
+                                </div>
+
+                                <!-- Tariff Rate Filter -->
+                                <div class="tariff-range-filter">
+                                    <label class="form-label">Filter by tariff range:</label>
+                                    <select id="tariff-range" class="form-control">
+                                        <option value="">All ranges</option>
+                                        <option value="0-10">0-10% (Low)</option>
+                                        <option value="10-20">10-20% (Moderate, including EU)</option>
+                                        <option value="20-30">20-30% (High)</option>
+                                        <option value="30+">30%+ (Very High)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Quick Region Buttons -->
+                                <div class="quick-region-filters">
+                                    <button class="btn btn--outline btn--sm region-btn" data-region="europe">🇪🇺 EU Countries</button>
+                                    <button class="btn btn--outline btn--sm region-btn" data-region="asia">🌏 Asian Countries</button>
+                                    <button class="btn btn--outline btn--sm region-btn" data-region="south-america">🌎 South America</button>
+                                    <button class="btn btn--outline btn--sm" id="show-all-regions">Show All</button>
+                                </div>
+                            </div>
+
+                            <!-- Industry Filter -->
+                            <div class="filter-group">
+                                <h3>Industry & Export Filter</h3>
+                                <div class="industry-buttons">
+                                    <button class="btn btn--secondary industry-btn active" data-industry="all">All Industries</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Steel & Aluminum">Steel & Aluminum</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Automobiles">Automobiles</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Semiconductors">Semiconductors</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Energy products">Energy</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Pharmaceuticals">Pharmaceuticals</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Agricultural">Agricultural</button>
+                                    <button class="btn btn--outline industry-btn" data-industry="Textiles">Textiles</button>
+                                </div>
+                                
+                                <!-- Export Category Filter -->
+                                <div class="export-category-filter">
+                                    <label class="form-label">Filter by major exports:</label>
+                                    <select id="export-category" class="form-control">
+                                        <option value="">All export categories</option>
+                                        <option value="manufactured-goods">Manufactured Goods</option>
+                                        <option value="raw-materials">Raw Materials</option>
+                                        <option value="agricultural">Agricultural Products</option>
+                                        <option value="technology">Technology Products</option>
+                                        <option value="energy">Energy Products</option>
+                                        <option value="chemicals">Chemicals & Pharmaceuticals</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Enhanced Map Section -->
+                    <section class="map-section">
+                        <div class="map-container">
+                            <div class="map-header">
+                                <h2>Global Countries by Tariff Rate & Region</h2>
+                                <div class="map-controls">
+                                    <button class="btn btn--outline btn--sm" id="reset-view">Reset View</button>
+                                    <button class="btn btn--outline btn--sm" id="export-data">Export Data</button>
+                                </div>
+                            </div>
+                            
+                            <div class="enhanced-legend">
+                                <div class="legend-section">
+                                    <span class="legend-title">Tariff Rates:</span>
+                                    <div class="legend-items">
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: #E3F2FD;"></span>
+                                            <span>0-10% (Low)</span>
+                                        </div>
+                                        <div class="legend-item eu-legend">
+                                            <span class="legend-color" style="background-color: #1976D2;"></span>
+                                            <span>🇪🇺 15% (EU Unified Rate)</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: #FFB74D;"></span>
+                                            <span>20-30% (High)</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: #E57373;"></span>
+                                            <span>30%+ (Very High)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="legend-section">
+                                    <span class="legend-title">Regions:</span>
+                                    <div class="legend-items">
+                                        <div class="legend-item">
+                                            <span class="region-badge europe-badge">EU</span>
+                                            <span>European Union</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="region-badge asia-badge">AS</span>
+                                            <span>Asia-Pacific</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="region-badge sa-badge">SA</span>
+                                            <span>South America</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="region-badge na-badge">NA</span>
+                                            <span>North America</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Countries Grid with Enhanced Layout -->
+                            <div class="countries-container">
+                                <div class="countries-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="filtered-count">86</span>
+                                        <span class="stat-label">Countries Shown</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="avg-tariff">21.8%</span>
+                                        <span class="stat-label">Avg. Tariff Rate</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="total-trade">$4.2T</span>
+                                        <span class="stat-label">Total Trade Value</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="countries-grid" id="countries-grid">
+                                    <!-- Countries will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Timeline Section -->
+                    <section class="timeline-section">
+                        <h2>Upcoming Global Changes</h2>
+                        <div class="timeline">
+                            <div class="timeline-item" data-date="August 7, 2025">
+                                <div class="timeline-date">Aug 7, 2025</div>
+                                <div class="timeline-content">
+                                    <h4>Global reciprocal tariffs resume</h4>
+                                    <p>Full implementation of reciprocal tariff system across all regions</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" data-date="August 12, 2025">
+                                <div class="timeline-date">Aug 12, 2025</div>
+                                <div class="timeline-content">
+                                    <h4>China trade truce expires</h4>
+                                    <p>30% tariff on China may revert to 145% without new agreement</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" data-date="August 29, 2025">
+                                <div class="timeline-date">Aug 29, 2025</div>
+                                <div class="timeline-content">
+                                    <h4>De minimis exemption closes globally</h4>
+                                    <p>All shipments subject to tariffs, no $800 exemption for any country</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" data-date="September 15, 2025">
+                                <div class="timeline-date">Sep 15, 2025</div>
+                                <div class="timeline-content">
+                                    <h4>South American bloc negotiations</h4>
+                                    <p>MERCOSUR countries may negotiate unified rates similar to EU deal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Economic Impact Tab Content -->
+                <div id="economic-impact-tab" class="tab-content">
+                    <!-- Global Economic Summary -->
+                    <section class="economic-summary-section">
+                        <h2>Global Economic Impact Analysis</h2>
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <div class="summary-value" id="total-additional-cost">$892.5B</div>
+                                <div class="summary-label">Total Additional Tariff Costs</div>
+                                <div class="summary-subtitle">Across all 86+ countries</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-value" id="total-import-value">$4.25T</div>
+                                <div class="summary-label">Total Import Value Affected</div>
+                                <div class="summary-subtitle">Global trade volume impacted</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-value" id="average-tariff-rate">21.0%</div>
+                                <div class="summary-label">Global Average Tariff Rate</div>
+                                <div class="summary-subtitle">Weighted average across all regions</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-value" id="most-affected-region">Asia-Pacific</div>
+                                <div class="summary-label">Most Affected Region</div>
+                                <div class="summary-subtitle">By total additional costs</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Regional Impact Charts -->
+                    <section class="charts-section">
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h3>Regional Impact Breakdown</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 400px;">
+                                    <canvas id="regional-impact-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Top 20 Countries by Additional Cost</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 400px;">
+                                    <canvas id="top-countries-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container full-width">
+                            <h3>Tariff Rate Distribution by Region</h3>
+                            <div class="chart-wrapper" style="position: relative; height: 450px;">
+                                <canvas id="tariff-distribution-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h3>Trade Volume by Region</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 400px;">
+                                    <canvas id="trade-volume-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Industry Impact Analysis</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 400px;">
+                                    <canvas id="industry-impact-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Enhanced Calculator Section -->
+                    <section class="calculator-section">
+                        <h2>Global Tariff Impact Calculator</h2>
+                        <div class="calculator-container">
+                            <div class="calculator-inputs">
+                                <div class="form-group">
+                                    <label class="form-label">Import Value (USD)</label>
+                                    <input type="number" id="import-value-input" class="form-control" placeholder="Enter import value" min="0" step="1000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Country/Region</label>
+                                    <select id="country-select" class="form-control">
+                                        <option value="">Select a country</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Industry (optional)</label>
+                                    <select id="industry-select" class="form-control">
+                                        <option value="">General tariff rate</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="calculator-results">
+                                <div class="result-card">
+                                    <div class="result-label">Tariff Rate Applied</div>
+                                    <div class="result-value" id="applied-rate">-</div>
+                                </div>
+                                <div class="result-card">
+                                    <div class="result-label">Additional Cost</div>
+                                    <div class="result-value" id="additional-cost">-</div>
+                                </div>
+                                <div class="result-card">
+                                    <div class="result-label">Total Cost</div>
+                                    <div class="result-value" id="total-cost">-</div>
+                                </div>
+                                <div class="result-card">
+                                    <div class="result-label">Major Exports</div>
+                                    <div class="result-value" id="major-exports">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Enhanced Data Tables Section -->
+                    <section class="data-tables-section">
+                        <div class="table-controls">
+                            <h2>Global Data Tables</h2>
+                            <div class="table-tabs">
+                                <button class="table-tab-btn active" data-table="countries">Countries Data</button>
+                                <button class="table-tab-btn" data-table="regional">Regional Summary</button>
+                                <button class="table-tab-btn" data-table="industries">Industries Data</button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-section" id="countries-table-section">
+                            <div class="table-header">
+                                <h3>All Countries Impact Data (86+ Countries)</h3>
+                                <div class="table-actions">
+                                    <button class="btn btn--outline btn--sm" id="export-country-data">Export CSV</button>
+                                    <button class="btn btn--outline btn--sm" id="export-excel-data">Export Excel</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table id="country-impact-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="sortable" data-sort="country">Country</th>
+                                            <th class="sortable" data-sort="region">Region</th>
+                                            <th class="sortable" data-sort="rate">Tariff Rate</th>
+                                            <th class="sortable" data-sort="import-value">Import Value (B)</th>
+                                            <th class="sortable" data-sort="additional-cost">Additional Cost (B)</th>
+                                            <th class="sortable" data-sort="major-exports">Major Exports</th>
+                                            <th class="sortable" data-sort="status">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-section hidden" id="regional-table-section">
+                            <div class="table-header">
+                                <h3>Regional Summary Data</h3>
+                                <button class="btn btn--outline btn--sm" id="export-regional-data">Export CSV</button>
+                            </div>
+                            <div class="table-container">
+                                <table id="regional-impact-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Region</th>
+                                            <th>Countries</th>
+                                            <th>Avg. Tariff Rate</th>
+                                            <th>Total Import Value (B)</th>
+                                            <th>Total Additional Cost (B)</th>
+                                            <th>% of Global Trade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-section hidden" id="industries-table-section">
+                            <div class="table-header">
+                                <h3>Industry Impact Data</h3>
+                                <button class="btn btn--outline btn--sm" id="export-industry-data">Export CSV</button>
+                            </div>
+                            <div class="table-container">
+                                <table id="industry-impact-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="sortable" data-sort="industry">Industry</th>
+                                            <th class="sortable" data-sort="rate">Avg. Tariff Rate</th>
+                                            <th class="sortable" data-sort="import-value">Import Value (B)</th>
+                                            <th class="sortable" data-sort="tariff-cost">Tariff Cost (B)</th>
+                                            <th class="sortable" data-sort="affected-countries">Affected Countries</th>
+                                            <th class="sortable" data-sort="status">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Regional Analysis Tab Content -->
+                <div id="regional-analysis-tab" class="tab-content">
+                    <section class="regional-analysis-section">
+                        <h2>Regional Trade Analysis</h2>
+                        
+                        <!-- EU Bloc Analysis -->
+                        <div class="region-analysis-card">
+                            <div class="region-header">
+                                <div class="region-icon-large">🇪🇺</div>
+                                <div class="region-title-info">
+                                    <h3>European Union Trade Bloc</h3>
+                                    <p>Unified negotiation success - All 27 EU member states at 15% tariff rate</p>
+                                </div>
+                                <div class="region-summary-stats">
+                                    <div class="summary-stat">
+                                        <span class="stat-number">27</span>
+                                        <span class="stat-desc">Countries</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">15%</span>
+                                        <span class="stat-desc">Unified Rate</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">$1.2T</span>
+                                        <span class="stat-desc">Trade Volume</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="region-content" id="eu-analysis-content">
+                                <!-- EU countries grid will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Asia-Pacific Analysis -->
+                        <div class="region-analysis-card">
+                            <div class="region-header">
+                                <div class="region-icon-large">🌏</div>
+                                <div class="region-title-info">
+                                    <h3>Asia-Pacific Region</h3>
+                                    <p>Diverse tariff landscape - Individual country negotiations</p>
+                                </div>
+                                <div class="region-summary-stats">
+                                    <div class="summary-stat">
+                                        <span class="stat-number">46</span>
+                                        <span class="stat-desc">Countries</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">24.5%</span>
+                                        <span class="stat-desc">Avg. Rate</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">$2.8T</span>
+                                        <span class="stat-desc">Trade Volume</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="region-content" id="asia-analysis-content">
+                                <!-- Asia-Pacific countries will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- South America Analysis -->
+                        <div class="region-analysis-card">
+                            <div class="region-header">
+                                <div class="region-icon-large">🌎</div>
+                                <div class="region-title-info">
+                                    <h3>South America</h3>
+                                    <p>High tariff environment - MERCOSUR bloc considerations</p>
+                                </div>
+                                <div class="region-summary-stats">
+                                    <div class="summary-stat">
+                                        <span class="stat-number">13</span>
+                                        <span class="stat-desc">Countries</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">31.2%</span>
+                                        <span class="stat-desc">Avg. Rate</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <span class="stat-number">$245B</span>
+                                        <span class="stat-desc">Trade Volume</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="region-content" id="sa-analysis-content">
+                                <!-- South America countries will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Enhanced Country Detail Modal -->
+        <div id="country-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-country-name"></h3>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="country-modal-grid">
+                        <div class="country-modal-main">
+                            <div class="tariff-info">
+                                <div class="tariff-main">
+                                    <span class="tariff-rate" id="modal-tariff-rate"></span>
+                                    <span class="tariff-label">Current Rate</span>
+                                </div>
+                                <div class="status-badge" id="modal-status"></div>
+                            </div>
+                            
+                            <div class="economic-impact-info">
+                                <div class="impact-item">
+                                    <strong>Import Value:</strong>
+                                    <span id="modal-import-value">-</span>
+                                </div>
+                                <div class="impact-item">
+                                    <strong>Additional Cost:</strong>
+                                    <span id="modal-additional-cost">-</span>
+                                </div>
+                                <div class="impact-item">
+                                    <strong>Region:</strong>
+                                    <span id="modal-region">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="country-modal-side">
+                            <div class="major-exports-section">
+                                <h4>Major Exports to US</h4>
+                                <div class="exports-list" id="modal-exports-list">
+                                    <!-- Exports will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="industry-rates" id="modal-industry-rates">
+                        <h4>Industry-Specific Rates</h4>
+                        <div class="industry-list" id="modal-industry-list">
+                            <!-- Industry rates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="notes-section" id="modal-notes">
+                        <h4>Additional Information</h4>
+                        <p id="modal-notes-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Industry Detail Modal -->
+        <div id="industry-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="industry-modal-name"></h3>
+                    <button class="modal-close" id="industry-modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="industry-info">
+                        <div class="industry-main">
+                            <span class="industry-rate" id="industry-modal-rate"></span>
+                            <span class="industry-label">Average Rate</span>
+                        </div>
+                        <div class="status-badge" id="industry-modal-status"></div>
+                    </div>
+                    
+                    <div class="industry-details">
+                        <div class="detail-item">
+                            <strong>Effective Date:</strong>
+                            <span id="industry-modal-date"></span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Previous Rate:</strong>
+                            <span id="industry-modal-previous"></span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Total Import Value:</strong>
+                            <span id="industry-modal-import-value">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Total Tariff Cost:</strong>
+                            <span id="industry-modal-tariff-cost">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Affected Countries:</strong>
+                            <span id="industry-modal-affected-countries">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Description:</strong>
+                            <span id="industry-modal-description"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="exemptions-section" id="industry-modal-exemptions">
+                        <h4>Exemptions & Special Provisions</h4>
+                        <ul id="industry-exemptions-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
